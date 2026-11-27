@@ -2,7 +2,7 @@
 
 <img src="https://avatars.githubusercontent.com/u/156096448?s=192&amp;v=4" alt="" width="64" height="64">
 
-Generate music with Suno or ACE Music, images with Nano Banana, GPT Image, Seedream or FLUX, and video with Seedance, Kling, Veo or Hailuo. The **Ace media generate** node submits one job per input. The **Ace media task** node looks up an existing job and routes the available media.
+Generate music with Suno or ACE Music, images with Nano Banana, GPT Image, Seedream or FLUX, and video with Seedance, Kling, Veo or Hailuo. The **Ace image search** node finds reference images and their source pages. The **Ace media generate** node submits one job per input. The **Ace media task** node looks up an existing job and routes the available media.
 
 ## Install
 
@@ -12,7 +12,13 @@ Search for `@acedatacloud/node-red-media` in **Manage palette → Install**, or 
 npm install @acedatacloud/node-red-media
 ```
 
-Use Node.js 22+ and Node-RED 4 or 5. Find the two flow nodes in the **network** category. The separate `@acedatacloud/node-red-acemusic` package continues to handle flows using the original ACE Music task node.
+Use Node.js 22+ and Node-RED 4 or 5. Find the three flow nodes in the **network** category. The separate `@acedatacloud/node-red-acemusic` package continues to handle flows using the original ACE Music task node.
+
+## Find reference images
+
+Use **Ace image search** with a Google Search application token. Send a string query in `msg.payload` and optionally select an image size in the editor. The node makes one synchronous, billable image search per input. The output payload is the `images` array in search order. Use `image_url` to reference the image and keep `link` to identify its source page. An empty array indicates no matches. A Catch node receives request errors.
+
+Import **Find reference images** from the package examples to try a query and inspect its results in Debug. See the [Google Search API contract](https://docs.acedata.cloud/openapi/serp.json) for the returned fields.
 
 ## Submit a job
 

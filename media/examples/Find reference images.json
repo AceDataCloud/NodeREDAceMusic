@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ace-search-tab",
+    "type": "tab",
+    "label": "Find reference images",
+    "disabled": false,
+    "info": "Configure a Google Search application token. Clicking the Inject node sends one billable search."
+  },
+  {
+    "id": "ace-search-in",
+    "type": "inject",
+    "z": "ace-search-tab",
+    "name": "Red fox in snow",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "payload": "red fox in snow",
+    "payloadType": "str",
+    "x": 140,
+    "y": 100,
+    "wires": [
+      [
+        "ace-search-node"
+      ]
+    ]
+  },
+  {
+    "id": "ace-search-node",
+    "type": "acedatacloud-image-search",
+    "z": "ace-search-tab",
+    "name": "",
+    "imageSize": "large",
+    "account": "",
+    "x": 350,
+    "y": 100,
+    "wires": [
+      [
+        "ace-search-results"
+      ]
+    ]
+  },
+  {
+    "id": "ace-search-results",
+    "type": "debug",
+    "z": "ace-search-tab",
+    "name": "Images and source pages",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 600,
+    "y": 100,
+    "wires": []
+  }
+]
