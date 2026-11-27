@@ -13,6 +13,12 @@ const services = new Map([
   ['hailuo',     { submit: '/hailuo/videos',             type: 'video', url: 'video_url' }]
 ]);
 
+function mediaService(key) {
+  const spec = services.get(key);
+  if (!spec) throw new Error('Select a supported media service in the node.');
+  return spec;
+}
+
 function rowsFor(service, result) {
   if (service === 'seedance') return [result?.data?.content];
   if (service === 'kling') return [result];
@@ -72,9 +78,7 @@ module.exports = function register(RED) {
       try {
         const token = RED.nodes.getNode(config.account)?.credentials?.token?.trim();
         if (!token) throw new Error('Configure an Ace Data Cloud application token.');
-        const spec = services.get(config.service);
-        if (!spec) throw new Error('Select a supported media service in the node.');
-        await handle(msg, send, token, spec);
+        await handle(msg, send, token);
         done();
       } catch (error) {
         done(error);
@@ -83,7 +87,8 @@ module.exports = function register(RED) {
   }
 
   function Generate(config) {
-    setup(this, config, async (msg, send, token, spec) => {
+    setup(this, config, async (msg, send, token) => {
+      const spec = mediaService(config.service);
       const body = msg.payload;
       if (Object.prototype.toString.call(body) !== '[object Object]' || !Object.keys(body).length) {
         throw new Error('Set msg.payload to the JSON request object for the selected generation API.');
@@ -101,7 +106,8 @@ module.exports = function register(RED) {
   RED.nodes.registerType('acedatacloud-media-generate', Generate);
 
   function Task(config) {
-    setup(this, config, async (msg, send, token, spec) => {
+    setup(this, config, async (msg, send, token) => {
+      const spec = mediaService(config.service);
       const id = typeof msg.payload === 'string' ? msg.payload.trim() : '';
       if (!id) throw new Error('Set msg.payload to the existing task ID.');
       if (msg.aceService && msg.aceService !== config.service) {
@@ -120,4 +126,19 @@ module.exports = function register(RED) {
     });
   }
   RED.nodes.registerType('acedatacloud-media-task', Task);
+
+  function ImageSearch(config) {
+    setup(this, config, async (msg, send, token) => {
+      const query = typeof msg.payload === 'string' ? msg.payload.trim() : '';
+      if (!query) throw new Error('Set msg.payload to the image search query.');
+      const body = { query, type: 'images' };
+      if (config.imageSize) body.image_size = config.imageSize;
+      const result = await post('/serp/google', body, token);
+      if (!Array.isArray(result?.images)) throw new Error('Image search did not return an images array.');
+      msg.payload = result.images;
+      msg.aceService = 'serp';
+      send(msg);
+    });
+  }
+  RED.nodes.registerType('acedatacloud-image-search', ImageSearch);
 };

@@ -54,6 +54,24 @@
         label: function() { return this.name || (labels[this.service] || 'Ace media') + ' task'; },
         oneditprepare: selectService
     });
+    RED.nodes.registerType('acedatacloud-image-search', {
+        category: 'network',
+        color: '#b7d8df',
+        defaults: {
+            name: { value: '' },
+            imageSize: { value: '' },
+            account: { value: '', type: 'acedatacloud-media-account', required: true }
+        },
+        inputs: 1,
+        outputs: 1,
+        outputLabels: ['image search results'],
+        icon: 'ace-image-search.svg',
+        paletteLabel: 'Ace image search',
+        label: function() { return this.name || 'Ace image search'; },
+        oneditprepare: function() {
+            $('#ace-image-search-art').attr('src', RED.settings.apiRootUrl + 'resources/@acedatacloud/node-red-media/ace-serp.png');
+        }
+    });
 })();
 </script>
 
@@ -102,4 +120,19 @@
     </ol>
     <h3>Details</h3>
     <p>Partial results can already contain usable media. HTTP failures, unknown IDs and mismatched task IDs trigger a Catch node. Other message properties are preserved.</p>
+</script>
+
+<script type="text/html" data-template-name="acedatacloud-image-search">
+    <div class="form-row"><label for="node-input-name">Name</label><input id="node-input-name" type="text"></div>
+    <div class="form-row"><label for="node-input-imageSize">Image size</label><img id="ace-image-search-art" alt="" width="24" height="24" style="vertical-align: middle"> <select id="node-input-imageSize"><option value="">Any size</option><option value="large">Large</option><option value="medium">Medium</option><option value="icon">Icon</option></select></div>
+    <div class="form-row"><label for="node-input-account">Account</label><input id="node-input-account" type="text"></div>
+</script>
+<script type="text/html" data-help-name="acedatacloud-image-search">
+    <p>Find reference images and their source pages with Google Image Search through Ace Data Cloud.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties"><dt>payload <span class="property-type">string</span></dt><dd>A search query, for example <code>red fox in snow</code>.</dd></dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties"><dt>payload <span class="property-type">array</span></dt><dd>The image results in search order, including their original API fields. Inspect <code>image_url</code> for the image and <code>link</code> for the source page. When there are no matches, the array is empty.</dd></dl>
+    <h3>Details</h3>
+    <p>Each input makes one synchronous search and can incur a charge. Choose an <a href="https://platform.acedata.cloud/console/applications?utm_source=node-red&amp;utm_medium=referral&amp;utm_campaign=evergreen">application token</a> with Google Search access. This node returns links. It does not download the images. Connect a Catch node for request errors.</p>
 </script>

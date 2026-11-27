@@ -37,9 +37,10 @@ function load(service, token = 'fixture-token') {
     { id: 'generate', z: 'tab', x: 100, y: 100, type: 'acedatacloud-media-generate', service, account: 'account', wires: [['accepted']] },
     { id: 'accepted', z: 'tab', x: 100, y: 100, type: 'helper' },
     { id: 'lookup', z: 'tab', x: 100, y: 100, type: 'acedatacloud-media-task', service, account: 'account', wires: [['media'], ['empty']] },
+    { id: 'search', z: 'tab', x: 100, y: 100, type: 'acedatacloud-image-search', imageSize: 'large', account: 'account', wires: [['media']] },
     { id: 'media', z: 'tab', x: 100, y: 100, type: 'helper' },
     { id: 'empty', z: 'tab', x: 100, y: 100, type: 'helper' },
-    { id: 'catch', z: 'tab', x: 100, y: 100, type: 'catch', scope: ['generate', 'lookup'], wires: [['errors']] },
+    { id: 'catch', z: 'tab', x: 100, y: 100, type: 'catch', scope: ['generate', 'lookup', 'search'], wires: [['errors']] },
     { id: 'errors', z: 'tab', x: 100, y: 100, type: 'helper' }
   ], { account: { token } });
 }
@@ -136,4 +137,37 @@ test('a submission without an accepted task ID uses Catch and sends once', async
   const msg = await observe('generate', 'errors', { payload: { prompt: 'A song' } });
   assert.match(msg.error.message, /did not return a task ID/);
   assert.equal(fetch.mock.callCount(), 1);
+});
+
+
+test('image search preserves full-size image URLs, source pages and message properties', async t => {
+  await load('suno');
+  const image = { title: 'Fox', image_url: 'https://images.example.org/fox.jpg', link: 'https://example.org/fox', image_width: 1200 };
+  const requests = [];
+  t.mock.method(globalThis, 'fetch', async (url, options) => {
+    requests.push({ url, options });
+    return Response.json({ images: [image] });
+  });
+  const msg = await observe('search', 'media', { topic: 'references', payload: '  red fox  ' });
+  assert.equal(requests.length, 1);
+  assert.equal(requests[0].url, 'https://api.acedata.cloud/serp/google');
+  assert.equal(requests[0].options.headers.Authorization, 'Bearer fixture-token');
+  assert.deepEqual(JSON.parse(requests[0].options.body), { query: 'red fox', type: 'images', image_size: 'large' });
+  assert.deepEqual(msg.payload, [image]);
+  assert.equal(msg.aceService, 'serp');
+  assert.equal(msg.topic, 'references');
+});
+
+test('image search returns an empty array for no matches', async t => {
+  await load('suno');
+  t.mock.method(globalThis, 'fetch', async () => Response.json({ images: [] }));
+  assert.deepEqual((await observe('search', 'media', { payload: 'empty' })).payload, []);
+});
+
+test('invalid image search inputs and responses are catchable', async t => {
+  await load('suno');
+  const fetch = t.mock.method(globalThis, 'fetch', async () => Response.json({ organic: [] }));
+  assert.match((await observe('search', 'errors', { payload: '  ' })).error.message, /image search query/);
+  assert.equal(fetch.mock.callCount(), 0);
+  assert.match((await observe('search', 'errors', { payload: 'fox' })).error.message, /images array/);
 });
