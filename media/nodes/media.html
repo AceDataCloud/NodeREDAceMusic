@@ -4,29 +4,12 @@
         suno: 'Suno', acemusic: 'ACE Music', 'nano-banana': 'Nano Banana', openai: 'GPT Image',
         seedream: 'Seedream', flux: 'FLUX', seedance: 'Seedance', kling: 'Kling', veo: 'Veo', hailuo: 'Hailuo'
     };
-    function mediaNode(action, outputs) {
-        return {
-            category: 'network',
-            color: '#b7d8df',
-            defaults: {
-                name: { value: '' },
-                service: { value: 'suno', required: true },
-                account: { value: '', type: 'acedatacloud-media-account', required: true }
-            },
-            inputs: 1,
-            outputs: outputs.length,
-            outputLabels: outputs,
-            icon: 'font-awesome/fa-film',
-            paletteLabel: 'Ace media ' + action,
-            label: function() { return this.name || (labels[this.service] || 'Ace media') + ' ' + action; },
-            oneditprepare: function() {
-                const select = $('#node-input-service').empty();
-                Object.entries(labels).forEach(function([key, name]) {
-                    $('<option>').val(key).text(name).appendTo(select);
-                });
-                select.val(this.service || 'suno');
-            }
-        };
+    function selectService() {
+        const select = $('#node-input-service').empty();
+        Object.entries(labels).forEach(function([key, name]) {
+            $('<option>').val(key).text(name).appendTo(select);
+        });
+        select.val(this.service || 'suno');
     }
 
     RED.nodes.registerType('acedatacloud-media-account', {
@@ -35,8 +18,38 @@
         credentials: { token: { type: 'password', required: true } },
         label: function() { return this.name || 'Ace Data Cloud'; }
     });
-    RED.nodes.registerType('acedatacloud-media-generate', mediaNode('generate', ['accepted task ID']));
-    RED.nodes.registerType('acedatacloud-media-task', mediaNode('task', ['available media', 'no media']));
+    RED.nodes.registerType('acedatacloud-media-generate', {
+        category: 'network',
+        color: '#b7d8df',
+        defaults: {
+            name: { value: '' },
+            service: { value: 'suno', required: true },
+            account: { value: '', type: 'acedatacloud-media-account', required: true }
+        },
+        inputs: 1,
+        outputs: 1,
+        outputLabels: ['accepted task ID'],
+        icon: 'font-awesome/fa-film',
+        paletteLabel: 'Ace media generate',
+        label: function() { return this.name || (labels[this.service] || 'Ace media') + ' generate'; },
+        oneditprepare: selectService
+    });
+    RED.nodes.registerType('acedatacloud-media-task', {
+        category: 'network',
+        color: '#b7d8df',
+        defaults: {
+            name: { value: '' },
+            service: { value: 'suno', required: true },
+            account: { value: '', type: 'acedatacloud-media-account', required: true }
+        },
+        inputs: 1,
+        outputs: 2,
+        outputLabels: ['available media', 'no media'],
+        icon: 'font-awesome/fa-film',
+        paletteLabel: 'Ace media task',
+        label: function() { return this.name || (labels[this.service] || 'Ace media') + ' task'; },
+        oneditprepare: selectService
+    });
 })();
 </script>
 
