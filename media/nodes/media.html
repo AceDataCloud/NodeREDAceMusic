@@ -1,0 +1,88 @@
+<script type="text/javascript">
+(function() {
+    const labels = {
+        suno: 'Suno', acemusic: 'ACE Music', 'nano-banana': 'Nano Banana', openai: 'GPT Image',
+        seedream: 'Seedream', flux: 'FLUX', seedance: 'Seedance', kling: 'Kling', veo: 'Veo', hailuo: 'Hailuo'
+    };
+    function mediaNode(action, outputs) {
+        return {
+            category: 'network',
+            color: '#b7d8df',
+            defaults: {
+                name: { value: '' },
+                service: { value: 'suno', required: true },
+                account: { value: '', type: 'acedatacloud-media-account', required: true }
+            },
+            inputs: 1,
+            outputs: outputs.length,
+            outputLabels: outputs,
+            icon: 'font-awesome/fa-film',
+            paletteLabel: 'Ace media ' + action,
+            label: function() { return this.name || (labels[this.service] || 'Ace media') + ' ' + action; },
+            oneditprepare: function() {
+                const select = $('#node-input-service').empty();
+                Object.entries(labels).forEach(function([key, name]) {
+                    $('<option>').val(key).text(name).appendTo(select);
+                });
+                select.val(this.service || 'suno');
+            }
+        };
+    }
+
+    RED.nodes.registerType('acedatacloud-media-account', {
+        category: 'config',
+        defaults: { name: { value: '' } },
+        credentials: { token: { type: 'password', required: true } },
+        label: function() { return this.name || 'Ace Data Cloud'; }
+    });
+    RED.nodes.registerType('acedatacloud-media-generate', mediaNode('generate', ['accepted task ID']));
+    RED.nodes.registerType('acedatacloud-media-task', mediaNode('task', ['available media', 'no media']));
+})();
+</script>
+
+<script type="text/html" data-template-name="acedatacloud-media-account">
+    <div class="form-row"><label for="node-config-input-name">Name</label><input id="node-config-input-name" type="text" placeholder="Ace Data Cloud"></div>
+    <div class="form-row"><label for="node-config-input-token">Token</label><input id="node-config-input-token" type="password" autocomplete="new-password"></div>
+</script>
+<script type="text/html" data-help-name="acedatacloud-media-account">
+    <p>Enter an application token from <a href="https://platform.acedata.cloud/console/applications">Ace Data Cloud Applications</a>. Use a token with access to the selected service. Node-RED stores the token as a password credential.</p>
+</script>
+
+<script type="text/html" data-template-name="acedatacloud-media-generate">
+    <div class="form-row"><label for="node-input-name">Name</label><input id="node-input-name" type="text"></div>
+    <div class="form-row"><label for="node-input-service">Service</label><select id="node-input-service"></select></div>
+    <div class="form-row"><label for="node-input-account">Account</label><input id="node-input-account" type="text"></div>
+    <div class="form-tips">Each input submits one generation request using your Ace Data Cloud subscription.</div>
+</script>
+<script type="text/html" data-help-name="acedatacloud-media-generate">
+    <p>Submit an asynchronous generation request and return its task ID.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">object</span></dt>
+        <dd>The selected generation API's JSON request. For Nano Banana, use <code>{"action":"generate","prompt":"A paper boat"}</code>. See the package README for a request for each service. The node sets <code>async: true</code>.</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">string</span></dt><dd>The accepted task ID. Save it before checking progress.</dd>
+        <dt>aceService <span class="property-type">string</span></dt><dd>The service identifier for the task node.</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>Sending an input can incur charges. Use a task node and the same service to check a previously submitted job. After a network timeout, check application history before submitting the request again.</p>
+</script>
+<script type="text/html" data-template-name="acedatacloud-media-task">
+    <div class="form-row"><label for="node-input-name">Name</label><input id="node-input-name" type="text"></div>
+    <div class="form-row"><label for="node-input-service">Service</label><select id="node-input-service"></select></div>
+    <div class="form-row"><label for="node-input-account">Account</label><input id="node-input-account" type="text"></div>
+</script>
+<script type="text/html" data-help-name="acedatacloud-media-task">
+    <p>Retrieve an existing task once and route its available media.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties"><dt>payload <span class="property-type">string</span></dt><dd>The original task ID for the selected service.</dd></dl>
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Available media <dl class="message-properties"><dt>payload <span class="property-type">object</span></dt><dd>Contains <code>id</code>, <code>service</code>, <code>state</code>, and <code>assets</code>. Each asset supplies its media <code>type</code> and HTTPS <code>url</code>, or <code>b64_json</code> for inline image results.</dd></dl></li>
+        <li>No media <dl class="message-properties"><dt>payload <span class="property-type">object</span></dt><dd>The same fields with an empty assets array. Check the state before polling again. An in-progress task or a finished task without media uses this port.</dd></dl></li>
+    </ol>
+    <h3>Details</h3>
+    <p>Partial results can already contain usable media. HTTP failures, unknown IDs and mismatched task IDs trigger a Catch node. Other message properties are preserved.</p>
+</script>

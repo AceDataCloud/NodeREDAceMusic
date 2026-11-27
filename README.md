@@ -2,6 +2,8 @@
 
 Use this node to check an ACE Music task created by your application and route the result to the next step in a flow. One input performs one read-only lookup. If the task returned one usable track and the other failed, the first output still delivers that track.
 
+For audio, image and video generation and task lookup across ten services, install [Ace Data Cloud media for Node-RED](https://github.com/AceDataCloud/NodeREDAceMusic/tree/main/media). Both packages can be installed together.
+
 ## Install
 
 In **Manage palette → Install**, search for `@acedatacloud/node-red-acemusic`. For manual installation, run the following command in your Node-RED user directory and restart Node-RED:
