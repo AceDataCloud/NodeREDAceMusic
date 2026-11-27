@@ -1,6 +1,6 @@
 {
   "name": "@acedatacloud/node-red-media",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Submit and check Suno and ACE Music audio, GPT Image, Nano Banana, FLUX and Seedream images, and Seedance, Kling, Veo and Hailuo videos from Node-RED.",
   "license": "MIT",
   "author": "Ace Data Cloud",
