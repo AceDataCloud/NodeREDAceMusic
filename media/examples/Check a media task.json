@@ -1,0 +1,117 @@
+[
+  {
+    "id": "media-example",
+    "type": "tab",
+    "label": "Check a media task",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "media-inject",
+    "z": "media-example",
+    "type": "inject",
+    "name": "Check an existing task",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "payload": "YOUR_TASK_ID",
+    "payloadType": "str",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 150,
+    "y": 100,
+    "wires": [
+      [
+        "media-lookup"
+      ]
+    ]
+  },
+  {
+    "id": "media-lookup",
+    "z": "media-example",
+    "type": "acedatacloud-media-task",
+    "name": "",
+    "x": 385,
+    "y": 100,
+    "wires": [
+      [
+        "media-tracks"
+      ],
+      [
+        "media-other"
+      ]
+    ],
+    "service": "nano-banana",
+    "account": "media-account"
+  },
+  {
+    "id": "media-tracks",
+    "z": "media-example",
+    "type": "debug",
+    "name": "Available media",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 655,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "media-other",
+    "z": "media-example",
+    "type": "debug",
+    "name": "No media yet or terminal failure",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 655,
+    "y": 140,
+    "wires": []
+  },
+  {
+    "id": "media-error",
+    "z": "media-example",
+    "type": "debug",
+    "name": "Lookup error",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "error.message",
+    "targetType": "msg",
+    "x": 655,
+    "y": 220,
+    "wires": []
+  },
+  {
+    "id": "media-catch",
+    "z": "media-example",
+    "type": "catch",
+    "name": "",
+    "scope": [
+      "media-lookup"
+    ],
+    "uncaught": false,
+    "x": 385,
+    "y": 220,
+    "wires": [
+      [
+        "media-error"
+      ]
+    ]
+  },
+  {
+    "id": "media-account",
+    "type": "acedatacloud-media-account",
+    "name": "Your Ace Data Cloud application"
+  }
+]

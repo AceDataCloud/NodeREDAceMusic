@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
     branches: [main]
-    tags: ['v*']
+    tags: ['v*', 'media-v*']
 permissions:
   contents: read
 jobs:
@@ -19,10 +19,19 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm pack --dry-run
+      - run: npm pack ./media --dry-run
       - name: Publish tagged package
         if: startsWith(github.ref, 'refs/tags/v')
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           test "v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
+          npm publish --access public
+      - name: Publish tagged media package
+        if: startsWith(github.ref, 'refs/tags/media-v')
+        working-directory: media
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          test "media-v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
           npm publish --access public
