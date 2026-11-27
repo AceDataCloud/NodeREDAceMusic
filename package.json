@@ -1,0 +1,20 @@
+{
+  "name": "@acedatacloud/node-red-acemusic",
+  "version": "1.0.0",
+  "description": "Retrieve an existing ACE Music task and route playable tracks in a Node-RED flow.",
+  "license": "MIT",
+  "author": "Ace Data Cloud",
+  "homepage": "https://github.com/AceDataCloud/NodeREDAceMusic#readme",
+  "repository": {"type": "git", "url": "git+https://github.com/AceDataCloud/NodeREDAceMusic.git"},
+  "bugs": {"url": "https://github.com/AceDataCloud/NodeREDAceMusic/issues"},
+  "keywords": ["node-red", "acemusic", "music", "audio", "acedatacloud"],
+  "files": ["nodes", "examples", "README.md", "LICENSE"],
+  "engines": {"node": ">=22"},
+  "node-red": {
+    "version": ">=4.0.0",
+    "nodes": {"ace-music-task": "nodes/ace-music-task.js"}
+  },
+  "publishConfig": {"access": "public", "registry": "https://registry.npmjs.org"},
+  "scripts": {"test": "node --test"},
+  "devDependencies": {"node-red": "5.0.10", "node-red-node-test-helper": "0.3.6"}
+}

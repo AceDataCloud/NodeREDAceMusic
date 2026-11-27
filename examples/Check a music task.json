@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ace-example",
+    "type": "tab",
+    "label": "Check a music task",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "ace-inject",
+    "z": "ace-example",
+    "type": "inject",
+    "name": "Existing task ID",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "payload": "YOUR_TASK_ID",
+    "payloadType": "str",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 150,
+    "y": 100,
+    "wires": [
+      [
+        "ace-lookup"
+      ]
+    ]
+  },
+  {
+    "id": "ace-lookup",
+    "z": "ace-example",
+    "type": "ace-music-task",
+    "name": "",
+    "x": 385,
+    "y": 100,
+    "wires": [
+      [
+        "ace-tracks"
+      ],
+      [
+        "ace-other"
+      ]
+    ]
+  },
+  {
+    "id": "ace-tracks",
+    "z": "ace-example",
+    "type": "debug",
+    "name": "Playable tracks",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 655,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "ace-other",
+    "z": "ace-example",
+    "type": "debug",
+    "name": "No playable tracks",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 655,
+    "y": 140,
+    "wires": []
+  },
+  {
+    "id": "ace-error",
+    "z": "ace-example",
+    "type": "debug",
+    "name": "Lookup error",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "error.message",
+    "targetType": "msg",
+    "x": 655,
+    "y": 220,
+    "wires": []
+  },
+  {
+    "id": "ace-catch",
+    "z": "ace-example",
+    "type": "catch",
+    "name": "",
+    "scope": [
+      "ace-lookup"
+    ],
+    "uncaught": false,
+    "x": 385,
+    "y": 220,
+    "wires": [
+      [
+        "ace-error"
+      ]
+    ]
+  }
+]

@@ -1,0 +1,48 @@
+<script type="text/javascript">
+    RED.nodes.registerType('ace-music-task', {
+        category: 'network',
+        color: '#b7d8df',
+        defaults: { name: { value: '' } },
+        credentials: { token: { type: 'password', required: true } },
+        inputs: 1,
+        outputs: 2,
+        outputLabels: ['playable tracks', 'no playable tracks'],
+        icon: 'font-awesome/fa-music',
+        paletteLabel: 'ACE Music task',
+        label: function() { return this.name || 'ACE Music task'; }
+    });
+</script>
+
+<script type="text/html" data-template-name="ace-music-task">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="ACE Music task">
+    </div>
+    <div class="form-row">
+        <label for="node-input-token"><i class="fa fa-key"></i> Token</label>
+        <input type="password" id="node-input-token" autocomplete="new-password">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ace-music-task">
+    <p>Retrieve an existing ACE Music task with your Ace Data Cloud application token.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">string</span></dt>
+        <dd>The original task ID from the same Ace Data Cloud account.</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Playable tracks
+            <dl class="message-properties"><dt>payload <span class="property-type">object</span></dt>
+            <dd>Contains <code>id</code>, <code>state</code>, and a non-empty <code>tracks</code> array with HTTPS audio URLs. Partial results may already contain playable tracks.</dd></dl>
+        </li>
+        <li>No playable tracks
+            <dl class="message-properties"><dt>payload <span class="property-type">object</span></dt>
+            <dd>The same object with an empty <code>tracks</code> array. Inspect <code>state</code> to distinguish processing, failure and results without audio.</dd></dl>
+        </li>
+    </ol>
+    <h3>Details</h3>
+    <p>One input performs one task lookup. Other message properties are preserved. A Catch node can handle missing tasks, invalid credentials, network errors and mismatched task IDs.</p>
+    <p>Store the token under this node’s credentials. Enter the raw token without a Bearer prefix. Open <a href="https://platform.acedata.cloud/console/applications">Ace Data Cloud Applications</a> to manage keys.</p>
+</script>
