@@ -10,6 +10,10 @@
             $('<option>').val(key).text(name).appendTo(select);
         });
         select.val(this.service || 'suno');
+        const image = $('#ace-media-service-image');
+        select.on('change', function() {
+            image.attr('src', RED.settings.apiRootUrl + 'resources/@acedatacloud/node-red-media/ace-' + select.val() + '.png');
+        }).trigger('change');
     }
 
     RED.nodes.registerType('acedatacloud-media-account', {
@@ -29,7 +33,7 @@
         inputs: 1,
         outputs: 1,
         outputLabels: ['accepted task ID'],
-        icon: 'font-awesome/fa-film',
+        icon: 'ace-media-generate.svg',
         paletteLabel: 'Ace media generate',
         label: function() { return this.name || (labels[this.service] || 'Ace media') + ' generate'; },
         oneditprepare: selectService
@@ -45,7 +49,7 @@
         inputs: 1,
         outputs: 2,
         outputLabels: ['available media', 'no media'],
-        icon: 'font-awesome/fa-film',
+        icon: 'ace-media-task.svg',
         paletteLabel: 'Ace media task',
         label: function() { return this.name || (labels[this.service] || 'Ace media') + ' task'; },
         oneditprepare: selectService
@@ -58,12 +62,12 @@
     <div class="form-row"><label for="node-config-input-token">Token</label><input id="node-config-input-token" type="password" autocomplete="new-password"></div>
 </script>
 <script type="text/html" data-help-name="acedatacloud-media-account">
-    <p>Enter an application token from <a href="https://platform.acedata.cloud/console/applications">Ace Data Cloud Applications</a>. Use a token with access to the selected service. Node-RED stores the token as a password credential.</p>
+    <p>Enter an application token from <a href="https://platform.acedata.cloud/console/applications?utm_source=node-red&amp;utm_medium=referral&amp;utm_campaign=evergreen">Ace Data Cloud Applications</a>. Use a token with access to the selected service. Node-RED stores the token as a password credential.</p>
 </script>
 
 <script type="text/html" data-template-name="acedatacloud-media-generate">
     <div class="form-row"><label for="node-input-name">Name</label><input id="node-input-name" type="text"></div>
-    <div class="form-row"><label for="node-input-service">Service</label><select id="node-input-service"></select></div>
+    <div class="form-row"><label for="node-input-service">Service</label><img id="ace-media-service-image" alt="" width="24" height="24" style="vertical-align: middle"> <select id="node-input-service"></select></div>
     <div class="form-row"><label for="node-input-account">Account</label><input id="node-input-account" type="text"></div>
     <div class="form-tips">Each input submits one generation request using your Ace Data Cloud subscription.</div>
 </script>
@@ -84,7 +88,7 @@
 </script>
 <script type="text/html" data-template-name="acedatacloud-media-task">
     <div class="form-row"><label for="node-input-name">Name</label><input id="node-input-name" type="text"></div>
-    <div class="form-row"><label for="node-input-service">Service</label><select id="node-input-service"></select></div>
+    <div class="form-row"><label for="node-input-service">Service</label><img id="ace-media-service-image" alt="" width="24" height="24" style="vertical-align: middle"> <select id="node-input-service"></select></div>
     <div class="form-row"><label for="node-input-account">Account</label><input id="node-input-account" type="text"></div>
 </script>
 <script type="text/html" data-help-name="acedatacloud-media-task">
