@@ -1,6 +1,6 @@
 {
   "name": "@acedatacloud/node-red-acemusic",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Retrieve an existing ACE Music task and route playable tracks in a Node-RED flow.",
   "license": "MIT",
   "author": "Ace Data Cloud",
