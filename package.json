@@ -1,6 +1,6 @@
 {
   "name": "@acedatacloud/node-red-acemusic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Retrieve an existing ACE Music task and route playable tracks in a Node-RED flow.",
   "license": "MIT",
   "author": "Ace Data Cloud",
@@ -8,7 +8,7 @@
   "repository": {"type": "git", "url": "git+https://github.com/AceDataCloud/NodeREDAceMusic.git"},
   "bugs": {"url": "https://github.com/AceDataCloud/NodeREDAceMusic/issues"},
   "keywords": ["node-red", "acemusic", "music", "audio", "acedatacloud"],
-  "files": ["nodes", "examples", "README.md", "LICENSE"],
+  "files": ["nodes", "resources", "examples", "README.md", "LICENSE"],
   "engines": {"node": ">=22"},
   "node-red": {
     "version": ">=4.0.0",

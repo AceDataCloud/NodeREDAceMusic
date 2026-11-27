@@ -1,6 +1,6 @@
 {
   "name": "@acedatacloud/node-red-media",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Submit and check Suno and ACE Music audio, GPT Image, Nano Banana, FLUX and Seedream images, and Seedance, Kling, Veo and Hailuo videos from Node-RED.",
   "license": "MIT",
   "author": "Ace Data Cloud",
@@ -12,7 +12,7 @@
   },
   "bugs": {"url": "https://github.com/AceDataCloud/NodeREDAceMusic/issues"},
   "keywords": ["node-red", "acedatacloud", "suno", "acemusic", "nano-banana", "gpt-image", "seedream", "flux", "kling", "veo", "hailuo", "seedance"],
-  "files": ["nodes", "examples", "README.md", "LICENSE"],
+  "files": ["nodes", "resources", "examples", "README.md", "LICENSE"],
   "engines": {"node": ">=22"},
   "node-red": {
     "version": ">=4.0.0",

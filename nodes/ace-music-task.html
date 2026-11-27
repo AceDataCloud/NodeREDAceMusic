@@ -7,13 +7,14 @@
         inputs: 1,
         outputs: 2,
         outputLabels: ['playable tracks', 'no playable tracks'],
-        icon: 'font-awesome/fa-music',
+        icon: 'ace-music-wave.svg',
         paletteLabel: 'ACE Music task',
         label: function() { return this.name || 'ACE Music task'; }
     });
 </script>
 
 <script type="text/html" data-template-name="ace-music-task">
+    <div class="form-row"><img src="resources/@acedatacloud/node-red-acemusic/ace-music.png" alt="ACE Music" width="32" height="32"></div>
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="ACE Music task">
@@ -44,5 +45,5 @@
     </ol>
     <h3>Details</h3>
     <p>One input performs one task lookup. Other message properties are preserved. A Catch node can handle missing tasks, invalid credentials, network errors and mismatched task IDs.</p>
-    <p>Store the token under this node’s credentials. Enter the raw token without a Bearer prefix. Open <a href="https://platform.acedata.cloud/console/applications">Ace Data Cloud Applications</a> to manage keys.</p>
+    <p>Store the token under this node’s credentials. Enter the raw token without a Bearer prefix. Open <a href="https://platform.acedata.cloud/console/applications?utm_source=node-red&amp;utm_medium=referral&amp;utm_campaign=evergreen">Ace Data Cloud Applications</a> to manage keys.</p>
 </script>

@@ -1,5 +1,7 @@
 # Ace Data Cloud media for Node-RED
 
+<img src="https://avatars.githubusercontent.com/u/156096448?s=192&amp;v=4" alt="" width="64" height="64">
+
 Generate music with Suno or ACE Music, images with Nano Banana, GPT Image, Seedream or FLUX, and video with Seedance, Kling, Veo or Hailuo. The **Ace media generate** node submits one job per input. The **Ace media task** node looks up an existing job and routes the available media.
 
 ## Install
@@ -14,7 +16,7 @@ Use Node.js 22+ and Node-RED 4 or 5. Find the two flow nodes in the **network** 
 
 ## Submit a job
 
-1. Add **Ace media generate**, select a service, and configure an account with an [Ace Data Cloud application token](https://platform.acedata.cloud/console/applications) that can access that service. Node-RED stores the token in the shared account's password credential.
+1. Add **Ace media generate**, select a service, and configure an account with an [Ace Data Cloud application token](https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen) that can access that service. Node-RED stores the token in the shared account's password credential.
 2. Connect an Inject node configured to send JSON. Select a request from the table or use the service's linked API contract for its supported settings. The node sets `async: true` and sends one request per input. Submitting a job can incur charges.
 3. Save the returned task ID from `msg.payload`. The node also sets `msg.aceService` for downstream task lookup. A Catch node receives request errors. If a submission times out, check your application history before retrying.
 
