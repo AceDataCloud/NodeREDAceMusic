@@ -1,0 +1,15 @@
+<script type="text/javascript">
+RED.nodes.registerType('acedatacloud-suno-account', {
+    category: 'config',
+    defaults: { name: { value: '' } },
+    credentials: { token: { type: 'password', required: true } },
+    label: function() { return this.name || 'Suno'; }
+});
+</script>
+<script type="text/html" data-template-name="acedatacloud-suno-account">
+    <div class="form-row"><label for="node-config-input-name">Name</label><input id="node-config-input-name" type="text" placeholder="Suno"></div>
+    <div class="form-row"><label for="node-config-input-token">Token</label><input id="node-config-input-token" type="password" autocomplete="new-password"></div>
+</script>
+<script type="text/html" data-help-name="acedatacloud-suno-account">
+    <p>Copy an application token with Suno access from <a href="https://platform.acedata.cloud/console/applications?utm_source=node-red&amp;utm_medium=referral&amp;utm_campaign=evergreen">Ace Data Cloud Applications</a>. Node-RED stores the token as a password credential.</p>
+</script>

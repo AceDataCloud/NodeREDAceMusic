@@ -1,0 +1,31 @@
+<script type="text/javascript">
+RED.nodes.registerType('acedatacloud-suno-task', {
+    category: 'network',
+    color: '#e8d8dd',
+    defaults: {
+        name: { value: '' },
+        account: { value: '', type: 'acedatacloud-suno-account', required: true }
+    },
+    inputs: 1,
+    outputs: 2,
+    outputLabels: ['completed tracks', 'progress or no audio'],
+    icon: 'suno.png',
+    paletteLabel: 'Suno task',
+    label: function() { return this.name || 'Suno task'; }
+});
+</script>
+<script type="text/html" data-template-name="acedatacloud-suno-task">
+    <div class="form-row"><label for="node-input-name">Name</label><input id="node-input-name" type="text"></div>
+    <div class="form-row"><label for="node-input-account">Account</label><input id="node-input-account" type="text"></div>
+</script>
+<script type="text/html" data-help-name="acedatacloud-suno-task">
+    <p>Look up an existing Suno audio task once. Connect the output of <strong>Suno generate</strong> or pass a saved task ID.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties"><dt>payload <span class="property-type">string</span></dt><dd>The original task ID.</dd></dl>
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Completed tracks for a successful, terminal task.</li>
+        <li>Progress, previews, or a terminal response without playable audio.</li>
+    </ol>
+    <p>Both outputs carry <code>msg.payload.id</code>, <code>state</code>, and <code>tracks</code>. Inspect <code>state</code> before another lookup. A Catch node receives task failures, mismatched IDs, and request errors.</p>
+</script>
