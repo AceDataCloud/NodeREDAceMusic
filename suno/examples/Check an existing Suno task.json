@@ -1,0 +1,114 @@
+[
+  {
+    "id": "3b43b9cbb37c0610",
+    "type": "tab",
+    "label": "Check an existing Suno task",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "777837e6792b5b21",
+    "type": "acedatacloud-suno-account",
+    "name": "Suno"
+  },
+  {
+    "id": "c638567fb4bea3e0",
+    "z": "3b43b9cbb37c0610",
+    "type": "inject",
+    "name": "Look up an existing Suno task",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "payload": "replace-with-existing-task-id",
+    "payloadType": "str",
+    "x": 180,
+    "y": 100,
+    "wires": [
+      [
+        "d5782b5e818fde20"
+      ]
+    ]
+  },
+  {
+    "id": "d5782b5e818fde20",
+    "z": "3b43b9cbb37c0610",
+    "type": "acedatacloud-suno-task",
+    "name": "Suno task",
+    "account": "777837e6792b5b21",
+    "x": 420,
+    "y": 100,
+    "wires": [
+      [
+        "996b9d1c2a948ca0"
+      ],
+      [
+        "6f85ba8d5bac0ab6"
+      ]
+    ]
+  },
+  {
+    "id": "996b9d1c2a948ca0",
+    "z": "3b43b9cbb37c0610",
+    "type": "debug",
+    "name": "Completed Suno tracks",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 670,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "6f85ba8d5bac0ab6",
+    "z": "3b43b9cbb37c0610",
+    "type": "debug",
+    "name": "Suno task progress",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 670,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "a6c5058363b8f5b0",
+    "z": "3b43b9cbb37c0610",
+    "type": "catch",
+    "name": "Suno lookup error",
+    "scope": [
+      "d5782b5e818fde20"
+    ],
+    "uncaught": false,
+    "x": 420,
+    "y": 160,
+    "wires": [
+      [
+        "f48ed895b6770ca1"
+      ]
+    ]
+  },
+  {
+    "id": "f48ed895b6770ca1",
+    "z": "3b43b9cbb37c0610",
+    "type": "debug",
+    "name": "Suno lookup error",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "complete": "error",
+    "targetType": "msg",
+    "x": 670,
+    "y": 160,
+    "wires": []
+  }
+]

@@ -1,0 +1,35 @@
+<script type="text/javascript">
+RED.nodes.registerType('acedatacloud-suno-generate', {
+    category: 'network',
+    color: '#e8d8dd',
+    defaults: {
+        name: { value: '' },
+        account: { value: '', type: 'acedatacloud-suno-account', required: true }
+    },
+    inputs: 1,
+    outputs: 1,
+    outputLabels: ['accepted task ID'],
+    icon: 'suno.png',
+    paletteLabel: 'Suno generate',
+    label: function() { return this.name || 'Suno generate'; }
+});
+</script>
+<script type="text/html" data-template-name="acedatacloud-suno-generate">
+    <div class="form-row"><label for="node-input-name">Name</label><input id="node-input-name" type="text"></div>
+    <div class="form-row"><label for="node-input-account">Account</label><input id="node-input-account" type="text"></div>
+    <div class="form-tips">Each input submits one Suno request using your application balance.</div>
+</script>
+<script type="text/html" data-help-name="acedatacloud-suno-generate">
+    <p>Submit one asynchronous Suno audio job.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">object</span></dt>
+        <dd>A <a href="https://docs.acedata.cloud/openapi/suno.json">Suno audio request</a>, such as <code>{"action":"generate","model":"chirp-v6","prompt":"A calm piano instrumental","instrumental":true}</code>. The node sets <code>async: true</code>.</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">string</span></dt><dd>The accepted task ID. Save it before checking progress.</dd>
+        <dt>aceService <span class="property-type">string</span></dt><dd>The value <code>suno</code> for downstream task nodes.</dd>
+    </dl>
+    <p>After a timeout, check application history before submitting the request again.</p>
+</script>

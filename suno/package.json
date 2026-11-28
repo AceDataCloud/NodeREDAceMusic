@@ -1,0 +1,26 @@
+{
+  "name": "@acedatacloud/node-red-suno",
+  "version": "1.0.0",
+  "description": "Submit Suno audio jobs, check existing tasks, and route finished tracks in Node-RED.",
+  "license": "MIT",
+  "author": "Ace Data Cloud",
+  "homepage": "https://github.com/AceDataCloud/NodeREDAceMusic/tree/main/suno#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AceDataCloud/NodeREDAceMusic.git",
+    "directory": "suno"
+  },
+  "bugs": {"url": "https://github.com/AceDataCloud/NodeREDAceMusic/issues"},
+  "keywords": ["node-red", "suno", "music", "audio", "acedatacloud"],
+  "files": ["nodes", "lib", "examples", "README.md", "LICENSE"],
+  "engines": {"node": ">=22"},
+  "node-red": {
+    "version": ">=4.0.0",
+    "nodes": {
+      "acedatacloud-suno-account": "nodes/suno-account.js",
+      "acedatacloud-suno-generate": "nodes/suno-generate.js",
+      "acedatacloud-suno-task": "nodes/suno-task.js"
+    }
+  },
+  "publishConfig": {"access": "public", "registry": "https://registry.npmjs.org"}
+}

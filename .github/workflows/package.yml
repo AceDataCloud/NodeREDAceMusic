@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
     branches: [main]
-    tags: ['v*', 'media-v*']
+    tags: ['v*', 'media-v*', 'suno-v*']
 permissions:
   contents: read
 jobs:
@@ -20,6 +20,7 @@ jobs:
       - run: npm test
       - run: npm pack --dry-run
       - run: npm pack ./media --dry-run
+      - run: npm pack ./suno --dry-run
       - name: Publish tagged package
         if: startsWith(github.ref, 'refs/tags/v')
         env:
@@ -34,4 +35,12 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           test "media-v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
+          npm publish --access public
+      - name: Publish tagged Suno package
+        if: startsWith(github.ref, 'refs/tags/suno-v')
+        working-directory: suno
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          test "suno-v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
           npm publish --access public
